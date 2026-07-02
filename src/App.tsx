@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { FileText, Download, Layout, Palette, Code, CheckCircle, Shield } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { FileText, Download, Layout, CheckCircle, Shield } from 'lucide-react';
 import { useReactToPrint } from 'react-to-print';
 import Editor from './components/Editor';
 import Preview from './components/Preview';

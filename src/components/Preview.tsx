@@ -1,9 +1,8 @@
-import React from 'react';
 import { useResumeStore } from '../store/useResumeStore';
 
 // Template 1: ATS Standard (Single column, no fuss, highly readable)
 function ATSStandardTemplate() {
-  const { resumeData, activeFont, activeColor } = useResumeStore();
+  const { resumeData, activeFont } = useResumeStore();
   const { basics, work, education, skills, projects } = resumeData;
   return (
     <div className={`w-full max-w-[816px] min-h-[1056px] bg-white text-black p-[1in] mx-auto shadow-2xl relative overflow-hidden print:shadow-none print:p-0 ${activeFont}`}>
