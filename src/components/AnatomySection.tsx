@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, AnimationProps } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Eye, BrainCircuit, Search, MousePointerClick } from 'lucide-react';
 
 export default function AnatomySection() {
@@ -20,7 +20,7 @@ export default function AnatomySection() {
   const opacityLabels = useTransform(scrollYProgress, [0.4, 0.5], [0, 1]);
 
   // Gentle float animation post-expansion
-  const floatAnimation: AnimationProps["animate"] = {
+  const floatAnimation: any = {
     y: [0, -10, 0],
     transition: {
       duration: 4,
