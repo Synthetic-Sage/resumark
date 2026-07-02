@@ -10,11 +10,11 @@ export default function AnatomySection() {
     offset: ["start end", "end start"]
   });
 
-  // Reduced vertical staggered spacing so it doesn't clip off the screen
-  const yHeader = useTransform(scrollYProgress, [0.3, 0.6], [0, -80]);
-  const ySummary = useTransform(scrollYProgress, [0.3, 0.6], [0, -20]);
+  // Tighter vertical spacing to prevent clipping on laptops
+  const yHeader = useTransform(scrollYProgress, [0.3, 0.6], [0, -60]);
+  const ySummary = useTransform(scrollYProgress, [0.3, 0.6], [0, -10]);
   const yExperience = useTransform(scrollYProgress, [0.3, 0.6], [0, 40]);
-  const ySkills = useTransform(scrollYProgress, [0.3, 0.6], [0, 100]);
+  const ySkills = useTransform(scrollYProgress, [0.3, 0.6], [0, 90]);
 
   // Labels fade in as it explodes
   const opacityLabels = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
@@ -23,7 +23,7 @@ export default function AnatomySection() {
 
   // Gentle continuous float
   const floatAnimation: any = {
-    y: [0, -10, 0],
+    y: [0, -8, 0],
     transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
   };
 
@@ -40,11 +40,12 @@ export default function AnatomySection() {
         </p>
       </div>
 
-      <div className="sticky top-1/4 w-full max-w-5xl mx-auto h-[60vh] hidden md:flex items-center justify-center">
+      {/* Changed to h-[80vh] to give more vertical breathing room on laptops */}
+      <div className="sticky top-[10vh] w-full max-w-5xl mx-auto h-[80vh] hidden md:flex items-center justify-center">
         
-        {/* Scaled down container to fit smaller laptop screens */}
+        {/* Central 2.5D Stack */}
         <motion.div 
-          className="relative w-full max-w-lg perspective-[1000px] scale-75 lg:scale-100"
+          className="relative w-full max-w-lg perspective-[1000px]"
           animate={floatAnimation}
         >
           {/* Base Shadow */}
@@ -53,10 +54,11 @@ export default function AnatomySection() {
           {/* Header Layer */}
           <motion.div 
             style={{ y: yHeader, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-0 left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-6 shadow-xl z-40 transition-colors hover:border-brand-300"
+            className="absolute top-0 left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-5 shadow-xl z-40 transition-colors hover:border-brand-300"
           >
-            <div className="h-5 w-3/4 bg-brand-100 rounded-md mb-4"></div>
-            <div className="h-3 w-1/2 bg-onyx-100 rounded-md"></div>
+            <h3 className="text-2xl font-serif font-bold text-onyx-900 leading-tight">Sarah Jenkins</h3>
+            <p className="text-brand-600 font-medium text-sm mb-2">Senior Product Designer</p>
+            <p className="text-xs text-onyx-500">San Francisco, CA • sarah@design.io • (555) 123-4567 • linkedin.com/in/sarahj</p>
             
             <motion.div style={{ opacity: opacityLabels, x: xLabelsRight }} className="absolute top-1/2 left-[105%] flex items-center w-64">
               <div className="w-12 h-[2px] bg-brand-200 shrink-0"></div>
@@ -73,11 +75,12 @@ export default function AnatomySection() {
           {/* Summary Layer */}
           <motion.div 
             style={{ y: ySummary, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-20 left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-6 shadow-lg z-30 transition-colors hover:border-blue-300"
+            className="absolute top-[88px] left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-5 shadow-lg z-30 transition-colors hover:border-blue-300"
           >
-            <div className="h-3 w-full bg-onyx-100 rounded-md mb-3"></div>
-            <div className="h-3 w-5/6 bg-onyx-100 rounded-md mb-3"></div>
-            <div className="h-3 w-4/6 bg-onyx-100 rounded-md"></div>
+            <h4 className="text-xs font-bold text-onyx-400 uppercase tracking-wider mb-2">Professional Summary</h4>
+            <p className="text-sm text-onyx-800 leading-relaxed">
+              Award-winning Product Designer with 7+ years of experience specializing in B2B SaaS interfaces. Proven track record of increasing user retention by 40% through intuitive, accessible design systems and rigorous A/B testing methodologies.
+            </p>
             
             <motion.div style={{ opacity: opacityLabels, x: xLabelsLeft }} className="absolute top-1/2 right-[105%] flex items-center justify-end w-64">
               <div className="mr-4 bg-white p-3 rounded-lg shadow-lg border border-onyx-100 text-right">
@@ -94,12 +97,19 @@ export default function AnatomySection() {
           {/* Experience Layer */}
           <motion.div 
             style={{ y: yExperience, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-44 left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-6 shadow-md z-20 transition-colors hover:border-emerald-300"
+            className="absolute top-[200px] left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-5 shadow-md z-20 transition-colors hover:border-emerald-300"
           >
-            <div className="h-4 w-1/3 bg-onyx-200 rounded-md mb-4"></div>
-            <div className="flex gap-2 mb-2"><div className="w-1.5 h-1.5 rounded-full bg-onyx-300 mt-1 shrink-0"></div><div className="h-2.5 w-full bg-onyx-100 rounded-md"></div></div>
-            <div className="flex gap-2 mb-2"><div className="w-1.5 h-1.5 rounded-full bg-onyx-300 mt-1 shrink-0"></div><div className="h-2.5 w-5/6 bg-onyx-100 rounded-md"></div></div>
-            <div className="flex gap-2"><div className="w-1.5 h-1.5 rounded-full bg-onyx-300 mt-1 shrink-0"></div><div className="h-2.5 w-4/6 bg-onyx-100 rounded-md"></div></div>
+            <h4 className="text-xs font-bold text-onyx-400 uppercase tracking-wider mb-3">Experience</h4>
+            
+            <div className="mb-1 flex justify-between items-end">
+              <h5 className="font-bold text-onyx-900 text-sm">Lead UI/UX Designer <span className="text-onyx-500 font-normal">at TechFlow</span></h5>
+              <span className="text-xs text-onyx-500">2021 — Present</span>
+            </div>
+            <ul className="text-sm text-onyx-700 space-y-1.5 list-disc list-outside ml-4">
+              <li><strong className="text-emerald-700">Spearheaded</strong> the redesign of the core analytics dashboard, resulting in a 25% decrease in customer support tickets.</li>
+              <li><strong className="text-emerald-700">Orchestrated</strong> a complete migration to Figma, saving the design team 15 hours weekly.</li>
+              <li><strong className="text-emerald-700">Mentored</strong> 3 junior designers, elevating overall team output quality.</li>
+            </ul>
             
             <motion.div style={{ opacity: opacityLabels, x: xLabelsRight }} className="absolute top-1/2 left-[105%] flex items-center w-64">
               <div className="w-12 h-[2px] bg-emerald-200 shrink-0"></div>
@@ -116,14 +126,15 @@ export default function AnatomySection() {
           {/* Skills Layer */}
           <motion.div 
             style={{ y: ySkills, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-72 left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-6 shadow-sm z-10 transition-colors hover:border-purple-300"
+            className="absolute top-[380px] left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-5 shadow-sm z-10 transition-colors hover:border-purple-300"
           >
-            <div className="h-4 w-1/4 bg-onyx-200 rounded-md mb-4"></div>
-            <div className="flex gap-2 flex-wrap">
-              <div className="h-6 w-16 bg-onyx-100 rounded-md"></div>
-              <div className="h-6 w-20 bg-onyx-100 rounded-md"></div>
-              <div className="h-6 w-14 bg-onyx-100 rounded-md"></div>
-              <div className="h-6 w-24 bg-onyx-100 rounded-md"></div>
+            <h4 className="text-xs font-bold text-onyx-400 uppercase tracking-wider mb-3">Core Competencies</h4>
+            <div className="flex gap-2 flex-wrap text-xs">
+              <span className="px-3 py-1 bg-onyx-100 text-onyx-800 rounded-md font-medium">Interaction Design</span>
+              <span className="px-3 py-1 bg-onyx-100 text-onyx-800 rounded-md font-medium">Prototyping</span>
+              <span className="px-3 py-1 bg-onyx-100 text-onyx-800 rounded-md font-medium">User Testing</span>
+              <span className="px-3 py-1 bg-onyx-100 text-onyx-800 rounded-md font-medium">Figma</span>
+              <span className="px-3 py-1 bg-onyx-100 text-onyx-800 rounded-md font-medium">HTML/CSS</span>
             </div>
             
             <motion.div style={{ opacity: opacityLabels, x: xLabelsLeft }} className="absolute top-1/2 right-[105%] flex items-center justify-end w-64">
