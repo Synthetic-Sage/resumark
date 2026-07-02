@@ -6,6 +6,8 @@ import Preview from './components/Preview';
 import { useResumeStore } from './store/useResumeStore';
 import { generateDocx } from './lib/docxExport';
 
+import AnatomySection from './components/AnatomySection';
+
 function App() {
   const [mode, setMode] = useState<'landing' | 'builder'>('landing');
 
@@ -87,6 +89,8 @@ function App() {
               </div>
             </div>
           </section>
+
+          <AnatomySection />
 
           {/* Template Gallery */}
           <section className="py-20 px-6 max-w-5xl mx-auto text-center" id="templates">

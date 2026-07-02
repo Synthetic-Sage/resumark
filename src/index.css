@@ -35,3 +35,6 @@
     break-inside: avoid;
   }
 }
+
+.transform-style-3d { transform-style: preserve-3d; }
+.perspective-[2000px] { perspective: 2000px; }
