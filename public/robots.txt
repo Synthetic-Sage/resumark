@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yourusername.github.io/resumark/sitemap.xml
+Sitemap: https://synthetic-sage.github.io/resumark/sitemap.xml
