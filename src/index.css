@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+/* Print Specific CSS */
+@media print {
+  @page {
+    margin: 0;
+    size: letter;
+  }
+  
+  body {
+    background: white;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+  
+  /* Prevent page breaks inside sections */
+  .resume-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
