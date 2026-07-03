@@ -111,9 +111,10 @@ function App() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="inline-block px-4 py-1.5 bg-slate-200/60 border border-slate-300 text-slate-800 font-bold text-xs rounded-full mb-6 uppercase tracking-widest mt-12 lg:mt-24"
               >
-                Design System Powered
+                <div className="inline-block px-4 py-1.5 rounded-full border-2 border-black bg-black text-white font-bold text-xs tracking-widest uppercase mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  100% Free, No Signup
+                </div>
               </motion.div>
               <motion.h1 
                 initial={{ y: 20, opacity: 0 }}
@@ -368,22 +369,41 @@ function App() {
           </section>
         </main>
 
-        <footer className="bg-slate-950 text-slate-400 py-12 px-6 relative z-10">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2 text-white">
-              <div className="w-6 h-6 bg-white text-slate-950 rounded-full flex items-center justify-center font-serif font-bold text-xs">
-                R
-              </div>
-              <span className="font-serif font-bold tracking-tight">Resumark</span>
+            <footer className="border-slate-200 border-t bg-white mt-auto relative z-50">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm text-slate-600">
+                <div>
+                    <h3 className="font-bold mb-4 text-blue-600 hover:text-blue-800">Resumark</h3>
+                    <p className="opacity-70">Empowering professionals with top-tier tools.</p>
+                </div>
+                <div>
+                    <h3 className="font-bold mb-4 text-blue-600 hover:text-blue-800">Tools</h3>
+                    <ul className="space-y-2 opacity-70">
+                        <li><a href="/" className="hover:text-blue-600 hover:text-blue-800">Home</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 className="font-bold mb-4 text-blue-600 hover:text-blue-800">Company</h3>
+                    <ul className="space-y-2 opacity-70">
+                        <li><a href="/about.html" className="hover:text-blue-600 hover:text-blue-800">About Us</a></li>
+                        <li><a href="/contact.html" className="hover:text-blue-600 hover:text-blue-800">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 className="font-bold mb-4 text-blue-600 hover:text-blue-800">Legal &amp; Compliance</h3>
+                    <ul className="space-y-2 opacity-70">
+                        <li><a href="/privacy-policy.html" className="hover:text-blue-600 hover:text-blue-800">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html" className="hover:text-blue-600 hover:text-blue-800">Terms of Service</a></li>
+                        <li><a href="/disclaimer.html" className="hover:text-blue-600 hover:text-blue-800 font-bold">Disclaimer</a></li>
+                    </ul>
+                </div>
             </div>
-            <div className="flex flex-wrap gap-4 md:gap-6 text-sm font-medium justify-center">
-              <button onClick={() => setActiveModal('about')} className="hover:text-white transition cursor-pointer">About</button>
-              <button onClick={() => setActiveModal('privacy')} className="hover:text-white transition cursor-pointer">Privacy Policy</button>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a>
+            <div className="border-t border-slate-200 border-t pt-8 flex flex-col md:flex-row justify-between items-center text-slate-600 opacity-70 text-xs font-semibold">
+                <p>&copy; 2026 Resumark. All rights reserved.</p>
+                <p className="mt-4 md:mt-0">Resumark does not guarantee employment outcomes. Resume content and accuracy are the sole responsibility of the user.</p>
             </div>
-            <p className="text-xs text-center md:text-left">&copy; {new Date().getFullYear()} Resumark. All rights reserved.</p>
-          </div>
-        </footer>
+        </div>
+    </footer>
       </div>
     );
   }

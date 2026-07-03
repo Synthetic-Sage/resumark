@@ -70,10 +70,59 @@ export default function Editor() {
 
   const templateSupportsPhoto = !['ats-standard', 'tech-pro', 'classic-professional', 'academic'].includes(activeTemplate);
 
+  // Completeness Calculation
+  const calculateCompleteness = () => {
+    let score = 0;
+    let nudge = "";
+    
+    if (!resumeData) return { score: 0, nudge: "Loading..." };
+
+    if (resumeData?.basics?.name && resumeData?.basics?.email) score += 20;
+    else nudge = "Add your Name and Email";
+    
+    if (resumeData?.basics?.summary && resumeData.basics.summary.length > 20) score += 15;
+    else if (!nudge) nudge = "Write a professional summary (20+ chars)";
+    
+    if (resumeData?.work && resumeData.work.length > 0) {
+      score += 25;
+      const hasBulletPoints = resumeData.work.some(w => w.highlights && w.highlights.length > 0);
+      if (!hasBulletPoints && !nudge) nudge = "Add bullet points to your Experience";
+    } else if (!nudge) nudge = "Add your Work Experience";
+    
+    if (resumeData?.education && resumeData.education.length > 0) score += 20;
+    else if (!nudge) nudge = "Add your Education details";
+    
+    if (resumeData?.skills && resumeData.skills.length > 0) score += 20;
+    else if (!nudge) nudge = "Add some Skills to stand out";
+    
+    if (score === 100) nudge = "Looking great! Ready to export.";
+    
+    return { score, nudge };
+  };
+  
+  const { score, nudge } = calculateCompleteness();
+
   return (
     <div className="flex flex-col pb-24 font-sans">
       
-      {/* Design Settings - Brutalist Pill Layout */}
+      
+        {/* Completeness Meter */}
+        <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 mb-8 shadow-sm">
+          <div className="flex justify-between items-end mb-2">
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Resume Strength</h3>
+              <p className="text-sm font-semibold text-slate-900">{nudge}</p>
+            </div>
+            <div className="text-2xl font-black text-slate-950">{score}%</div>
+          </div>
+          <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+            <div 
+              className={`h-full transition-all duration-500 ${score < 50 ? 'bg-rose-500' : score < 80 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+              style={{ width: `${score}%` }}
+            />
+          </div>
+        </div>
+{/* Design Settings - Brutalist Pill Layout */}
       <div className="bg-slate-950 rounded-3xl p-6 mb-8 text-white shadow-xl">
         <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-800 pb-2">Design Tokens</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
