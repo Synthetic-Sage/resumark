@@ -735,7 +735,7 @@ function StartupModernTemplate() {
 // Template 8: Designer Portfolio
 function DesignerPortfolioTemplate() {
   const { resumeData, activeFont, activeColor } = useResumeStore();
-  const { basics, work, education, projects, skills } = resumeData;
+  const { basics, work, education, skills } = resumeData;
   const fontProps = getFontProps(activeFont);
 
   return (

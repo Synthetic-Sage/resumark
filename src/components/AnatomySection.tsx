@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Eye, BrainCircuit, Search, MousePointerClick, CheckCircle, XCircle, TrendingUp } from 'lucide-react';
 
 const VARIANTS = [
@@ -50,11 +50,11 @@ export default function AnatomySection() {
 
   const floatAnimation = {
     y: [0, -10, 0],
-    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" as const }
   };
 
   // Variants for the slide-up animation
-  const slideUpVariants = {
+  const slideUpVariants: Variants = {
     initial: { opacity: 0, y: 100, scale: 0.95 },
     animate: { 
       opacity: 1, 
@@ -70,7 +70,7 @@ export default function AnatomySection() {
     exit: { opacity: 0, y: -100, scale: 0.95, transition: { duration: 0.5, ease: "easeIn" } }
   };
 
-  const tooltipVariants = {
+  const tooltipVariants: Variants = {
     initial: { opacity: 0, x: -30 },
     animate: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
     exit: { opacity: 0, transition: { duration: 0.2 } }
