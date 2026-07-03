@@ -99,7 +99,7 @@ function App() {
               className="absolute top-10 lg:top-24 left-1/2 -translate-x-[80%] w-full max-w-[400px] z-30 pointer-events-none hidden lg:block"
             >
               <div className="text-center">
-                <div className="text-slate-950 font-bold font-yuyu text-3xl lg:text-4xl leading-tight mb-3">"Stop fighting with formatting. Start landing interviews."</div>
+                <div className="text-slate-950 font-bold font-yuyu text-3xl lg:text-4xl leading-tight mb-3">&quot;Stop fighting with formatting. Start landing interviews.&quot;</div>
                 <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
                   <span className="w-8 h-px bg-slate-300"></span> The Resumark Promise <span className="w-8 h-px bg-slate-300"></span>
                 </div>

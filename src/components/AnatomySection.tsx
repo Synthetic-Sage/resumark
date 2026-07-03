@@ -414,7 +414,7 @@ export default function AnatomySection() {
                             <span>Ph.D. in Cognitive Science</span>
                             <span>Stanford University (2020)</span>
                           </div>
-                          <p className="italic mt-0.5">Dissertation: "HCI and Visual Parsing in Digital Environments"</p>
+                          <p className="italic mt-0.5">Dissertation: &quot;HCI and Visual Parsing in Digital Environments&quot;</p>
                         </div>
                       </div>
 
@@ -422,10 +422,10 @@ export default function AnatomySection() {
                         <h4 className="text-[11px] lg:text-xs font-bold text-onyx-900 uppercase tracking-widest mb-1 border-b border-onyx-200">Publications</h4>
                         <ul className="text-[9px] lg:text-[10px] text-onyx-800 space-y-2 mt-2 list-none">
                           <li className="pl-4 -indent-4">
-                            <strong>Jenkins, S.</strong>, & Smith, R. (2022). <span className="italic">"Eye-tracking analysis of brutalist web interfaces."</span> Journal of Human-Computer Interaction, 45(3), 112-128.
+                            <strong>Jenkins, S.</strong>, &amp; Smith, R. (2022). <span className="italic">&quot;Eye-tracking analysis of brutalist web interfaces.&quot;</span> Journal of Human-Computer Interaction, 45(3), 112-128.
                           </li>
                           <li className="pl-4 -indent-4">
-                            <strong>Jenkins, S.</strong> (2021). <span className="italic">"Data density in professional documentation."</span> Cognitive Design Quarterly, 12(1), 45-60.
+                            <strong>Jenkins, S.</strong> (2021). <span className="italic">&quot;Data density in professional documentation.&quot;</span> Cognitive Design Quarterly, 12(1), 45-60.
                           </li>
                         </ul>
                       </div>
