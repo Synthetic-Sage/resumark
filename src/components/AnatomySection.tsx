@@ -20,6 +20,18 @@ const VARIANTS = [
     name: 'Executive Leadership',
     pros: ['Focuses on Impact Metrics', 'High Data Density'],
     cons: ['Requires strong track record']
+  },
+  {
+    id: 'designer',
+    name: 'Designer Portfolio',
+    pros: ['Dark Mode Aesthetic', 'High Contrast Typography'],
+    cons: ['Not traditional corporate']
+  },
+  {
+    id: 'academic',
+    name: 'Academic CV',
+    pros: ['Dense Information', 'Classic Serif Authority'],
+    cons: ['Can look text-heavy']
   }
 ];
 
@@ -333,6 +345,103 @@ export default function AnatomySection() {
                         </motion.div>
                       </div>
 
+                    </div>
+                  )}
+
+                  {variant.id === 'designer' && (
+                    <div className="h-full flex flex-col relative bg-slate-950 text-slate-300 p-6 rounded-lg overflow-hidden font-sans border-2 border-brand-500/20">
+                      <div className="absolute top-0 left-0 w-2 h-full bg-brand-500"></div>
+                      <div className="mb-6 flex justify-between items-start">
+                        <div>
+                          <h3 className="text-2xl lg:text-4xl font-bold text-white tracking-tighter uppercase mb-1">Sarah<br/>Jenkins</h3>
+                          <div className="h-1 w-12 bg-brand-500 mb-2"></div>
+                          <p className="text-xs text-brand-400 font-mono">Product Designer</p>
+                        </div>
+                        <div className="text-right text-[9px] lg:text-[10px] font-mono space-y-1 opacity-60">
+                          <p>SF, CA</p>
+                          <p>sarah@design.io</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-12 gap-6 flex-1">
+                        <div className="col-span-4 border-r border-slate-800 pr-4">
+                          <h4 className="text-[10px] font-bold text-white uppercase tracking-widest mb-3 text-brand-500">Skills</h4>
+                          <div className="flex flex-col gap-2 text-[9px] opacity-80">
+                            <span>UI/UX Design</span>
+                            <span>Prototyping</span>
+                            <span>Design Systems</span>
+                            <span>Figma / Framer</span>
+                          </div>
+                        </div>
+                        <div className="col-span-8">
+                          <h4 className="text-[10px] font-bold text-white uppercase tracking-widest mb-3 text-brand-500">Experience</h4>
+                          <div className="mb-4">
+                            <h5 className="font-bold text-white text-[11px] mb-1">TechFlow <span className="opacity-50 font-normal">| Lead Designer</span></h5>
+                            <ul className="text-[9px] space-y-1.5 opacity-80 list-disc ml-3 mt-2">
+                              <li>Architected Dark Mode system utilized by 2M users.</li>
+                              <li>Reduced onboarding drop-off by 15% via A/B testing.</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Tooltip Anchor: Dark Mode */}
+                      <motion.div variants={tooltipVariants} className="absolute top-[30%] left-[102%] flex items-center w-48 lg:w-64 hidden md:flex z-30">
+                        <div className="w-12 h-[1px] bg-pink-400 shrink-0"></div>
+                        <div className="w-2 h-2 rounded-full bg-pink-500 -ml-1 border border-white shrink-0 shadow-sm"></div>
+                        <div className="ml-3 bg-white/95 backdrop-blur-md p-3 lg:p-4 rounded-xl shadow-xl border border-onyx-200 text-left relative overflow-hidden">
+                          <div className="absolute top-0 left-0 w-1 h-full bg-pink-500"></div>
+                          <div className="flex items-center gap-2 text-pink-600 mb-1.5">
+                            <Eye size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">Dark UI</span>
+                          </div>
+                          <p className="text-[10px] lg:text-xs text-onyx-600 leading-relaxed">Instantly stands out in a stack of white papers, showcasing UI proficiency.</p>
+                        </div>
+                      </motion.div>
+                    </div>
+                  )}
+
+                  {variant.id === 'academic' && (
+                    <div className="h-full flex flex-col gap-4 relative font-serif">
+                      <div className="text-center border-b border-onyx-300 pb-4">
+                        <h3 className="text-2xl lg:text-3xl font-bold text-onyx-900 mb-2">Dr. Sarah Jenkins</h3>
+                        <p className="text-[10px] lg:text-xs text-onyx-700 italic">Department of Cognitive Science • Stanford University</p>
+                      </div>
+
+                      <div>
+                        <h4 className="text-[11px] lg:text-xs font-bold text-onyx-900 uppercase tracking-widest mb-1 border-b border-onyx-200">Education</h4>
+                        <div className="text-[10px] lg:text-[11px] text-onyx-800 mt-2">
+                          <div className="flex justify-between font-bold text-onyx-900">
+                            <span>Ph.D. in Cognitive Science</span>
+                            <span>Stanford University (2020)</span>
+                          </div>
+                          <p className="italic mt-0.5">Dissertation: "HCI and Visual Parsing in Digital Environments"</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-[11px] lg:text-xs font-bold text-onyx-900 uppercase tracking-widest mb-1 border-b border-onyx-200">Publications</h4>
+                        <ul className="text-[9px] lg:text-[10px] text-onyx-800 space-y-2 mt-2 list-none">
+                          <li className="pl-4 -indent-4">
+                            <strong>Jenkins, S.</strong>, & Smith, R. (2022). <span className="italic">"Eye-tracking analysis of brutalist web interfaces."</span> Journal of Human-Computer Interaction, 45(3), 112-128.
+                          </li>
+                          <li className="pl-4 -indent-4">
+                            <strong>Jenkins, S.</strong> (2021). <span className="italic">"Data density in professional documentation."</span> Cognitive Design Quarterly, 12(1), 45-60.
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      {/* Tooltip Anchor: Academic formatting */}
+                      <motion.div variants={tooltipVariants} className="absolute top-[60%] left-[102%] flex items-center w-48 lg:w-64 hidden md:flex z-30">
+                        <div className="w-12 h-[1px] bg-slate-600 shrink-0"></div>
+                        <div className="w-2 h-2 rounded-full bg-slate-700 -ml-1 border border-white shrink-0 shadow-sm"></div>
+                        <div className="ml-3 bg-white/95 backdrop-blur-md p-3 lg:p-4 rounded-xl shadow-xl border border-onyx-200 text-left relative overflow-hidden">
+                          <div className="absolute top-0 left-0 w-1 h-full bg-slate-700"></div>
+                          <div className="flex items-center gap-2 text-slate-700 mb-1.5">
+                            <CheckCircle size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">Academic Standard</span>
+                          </div>
+                          <p className="text-[10px] lg:text-xs text-onyx-600 leading-relaxed">Hanging indents and strict serif hierarchies comply with CV standards for peer review.</p>
+                        </div>
+                      </motion.div>
                     </div>
                   )}
 

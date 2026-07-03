@@ -60,11 +60,18 @@ const defaultResumeData: ResumeData = {
   projects: [],
 };
 
+export interface ThemeColor {
+  id: string;
+  text: string;
+  bg: string;
+  border: string;
+}
+
 interface ResumeState {
   resumeData: ResumeData;
   activeTemplate: string;
   activeFont: string;
-  activeColor: string;
+  activeColor: ThemeColor;
   updateBasics: (data: Partial<ResumeData['basics']>) => void;
   addWork: (work: Omit<ResumeData['work'][0], 'id'>) => void;
   updateWork: (id: string, work: Partial<ResumeData['work'][0]>) => void;
@@ -84,7 +91,7 @@ interface ResumeState {
 
   setTemplate: (templateId: string) => void;
   setFont: (font: string) => void;
-  setColor: (color: string) => void;
+  setColor: (color: ThemeColor) => void;
 }
 
 export const useResumeStore = create<ResumeState>()(
@@ -93,7 +100,7 @@ export const useResumeStore = create<ResumeState>()(
       resumeData: defaultResumeData,
       activeTemplate: 'ats-standard',
       activeFont: 'font-sans',
-      activeColor: 'text-brand-600',
+      activeColor: { id: 'slate', text: 'text-slate-900', bg: 'bg-slate-900', border: 'border-slate-900' },
       updateBasics: (data) =>
         set((state) => ({
           resumeData: {
@@ -178,7 +185,7 @@ export const useResumeStore = create<ResumeState>()(
       setColor: (color) => set({ activeColor: color }),
     }),
     {
-      name: 'resumark-storage', // Key for localStorage
+      name: 'resumark-storage-v2', // Key for localStorage
     }
   )
 );

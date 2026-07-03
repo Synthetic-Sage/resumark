@@ -11,6 +11,8 @@ export default {
         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
         serif: ['"Playfair Display"', 'serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
+        montserrat: ['Montserrat', 'sans-serif'],
+        yuyu: ['Yuyu', 'sans-serif'],
       },
       colors: {
         // Onyx Black & Terracotta Palette
