@@ -486,8 +486,13 @@ export default function Preview() {
   };
 
   return (
-    <div className="w-full flex justify-center pb-24 print:pb-0">
-      {renderTemplate()}
+    <div className="w-full flex justify-center pb-24 print:pb-0 px-2 lg:px-8">
+      {/* Premium Brutalist / Muted Industrial Frame around the paper */}
+      <div className="p-4 sm:p-6 lg:p-10 bg-slate-300 border-4 border-slate-100 rounded-[2.5rem] shadow-2xl print:p-0 print:bg-transparent print:border-none print:rounded-none print:shadow-none">
+        <div className="rounded-xl overflow-hidden shadow-xl ring-1 ring-black/5">
+          {renderTemplate()}
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,184 +1,352 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Eye, BrainCircuit, Search, MousePointerClick } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Eye, BrainCircuit, Search, MousePointerClick, CheckCircle, XCircle, TrendingUp } from 'lucide-react';
+
+const VARIANTS = [
+  {
+    id: 'ats',
+    name: 'ATS Standard',
+    pros: ['100% Machine Readable', 'Recruiter Familiarity'],
+    cons: ['Less Visual Flair']
+  },
+  {
+    id: 'creative',
+    name: 'Creative / Startup',
+    pros: ['Instantly Memorable', 'Shows Design Skills'],
+    cons: ['May fail older ATS']
+  },
+  {
+    id: 'executive',
+    name: 'Executive Leadership',
+    pros: ['Focuses on Impact Metrics', 'High Data Density'],
+    cons: ['Requires strong track record']
+  }
+];
 
 export default function AnatomySection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Tighter vertical spacing to prevent clipping on laptops
-  const yHeader = useTransform(scrollYProgress, [0.3, 0.6], [0, -30]);
-  const ySummary = useTransform(scrollYProgress, [0.3, 0.6], [0, -10]);
-  const yExperience = useTransform(scrollYProgress, [0.3, 0.6], [0, 10]);
-  const ySkills = useTransform(scrollYProgress, [0.3, 0.6], [0, 30]);
+  // Auto-play loop every 6 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % VARIANTS.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
-  // Labels fade in as it explodes
-  const opacityLabels = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
-  const xLabelsRight = useTransform(scrollYProgress, [0.4, 0.6], [-10, 0]);
-  const xLabelsLeft = useTransform(scrollYProgress, [0.4, 0.6], [10, 0]);
+  const variant = VARIANTS[currentIndex];
 
-  // Gentle continuous float
   const floatAnimation: any = {
-    y: [0, -5, 0],
+    y: [0, -10, 0],
     transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
   };
 
+  // Variants for the slide-up animation
+  const slideUpVariants = {
+    initial: { opacity: 0, y: 100, scale: 0.95 },
+    animate: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1, 
+      transition: { 
+        duration: 0.6, 
+        ease: "easeOut",
+        staggerChildren: 0.3, // This staggers the tooltips!
+        delayChildren: 0.3
+      } 
+    },
+    exit: { opacity: 0, y: -100, scale: 0.95, transition: { duration: 0.5, ease: "easeIn" } }
+  };
+
+  const tooltipVariants = {
+    initial: { opacity: 0, x: -30 },
+    animate: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
+    exit: { opacity: 0, transition: { duration: 0.2 } }
+  };
+
   return (
-    <section 
-      ref={containerRef} 
-      className="relative min-h-[140vh] bg-onyx-50 overflow-hidden flex flex-col items-center pt-24 pb-24 border-y border-onyx-200"
-    >
-      <div className="text-center z-10 mb-8 max-w-3xl px-6">
-        <h2 className="text-4xl md:text-5xl font-serif font-bold text-onyx-900 mb-4">The Anatomy of a Perfect Resume</h2>
-        <p className="text-lg text-onyx-500">
-          We didn't just design templates. We engineered them based on eye-tracking science and ATS parsing algorithms. 
-          Scroll down to see exactly how a modern resume is digested.
-        </p>
+    <section className="relative min-h-screen bg-onyx-50 border-y border-onyx-200 pt-32 pb-20 flex flex-col items-center overflow-hidden">
+      
+      {/* Title and Controls */}
+      <div className="text-center z-40 shrink-0 relative px-4">
+        <h2 className="text-3xl md:text-5xl font-serif font-bold text-onyx-900 mb-6">Anatomy of a Perfect Resume</h2>
+        
+        {/* Progress / Manual Toggles */}
+        <div className="flex items-center justify-center gap-2 bg-white/50 p-1.5 rounded-full mx-auto w-fit border border-onyx-200 shadow-sm backdrop-blur-md">
+          {VARIANTS.map((v, i) => (
+            <button 
+              key={v.id}
+              onClick={() => setCurrentIndex(i)}
+              className={`px-4 lg:px-6 py-2 rounded-full text-xs lg:text-sm font-bold transition-all duration-300 ${currentIndex === i ? 'bg-onyx-900 shadow-md text-white' : 'text-onyx-500 hover:text-onyx-700 hover:bg-onyx-100/50'}`}
+            >
+              {v.name}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="sticky top-[15vh] w-full max-w-5xl mx-auto h-[70vh] hidden md:flex items-center justify-center">
+      {/* 3D Scene Container */}
+      <div className="relative flex-1 w-full max-w-7xl mx-auto flex items-center justify-center perspective-[1500px] mt-12 lg:mt-16 px-4">
         
-        {/* Central 2.5D Stack - tighter scale */}
-        <motion.div 
-          className="relative w-full max-w-[450px] perspective-[1000px] scale-90 lg:scale-100"
-          animate={floatAnimation}
-        >
-          {/* Base Shadow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-24 w-3/4 h-10 bg-onyx-200/50 rounded-[100%] blur-2xl"></div>
-
-          {/* Header Layer */}
+        <AnimatePresence mode="wait">
           <motion.div 
-            style={{ y: yHeader, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-0 left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-4 shadow-xl z-40 transition-colors hover:border-brand-300"
+            key={variant.id}
+            variants={slideUpVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16"
           >
-            <h3 className="text-2xl font-serif font-bold text-onyx-900 leading-tight">Sarah Jenkins</h3>
-            <p className="text-brand-600 font-medium text-sm mb-2">Senior Product Designer</p>
-            <p className="text-xs text-onyx-500">San Francisco, CA • sarah@design.io • (555) 123-4567 • linkedin.com/in/sarahj</p>
             
-            <motion.div style={{ opacity: opacityLabels, x: xLabelsRight }} className="absolute top-1/2 left-[105%] flex items-center w-64">
-              <div className="w-12 h-[2px] bg-brand-200 shrink-0"></div>
-              <div className="w-3 h-3 rounded-full bg-brand-500 -ml-2 border-2 border-white shrink-0 z-10"></div>
-              <div className="ml-4 bg-white p-3 rounded-lg shadow-lg border border-onyx-100">
-                <div className="flex items-center gap-2 text-brand-600 mb-1">
-                  <Eye size={16} /> <span className="font-bold text-[10px] tracking-widest uppercase">The F-Pattern</span>
-                </div>
-                <p className="text-xs text-onyx-600 leading-relaxed">Recruiters anchor top-left. Our headers ensure your name and title are instantly processed.</p>
+            {/* LEFT: Pros & Cons */}
+            <div className="w-full lg:w-1/4 max-w-sm shrink-0">
+              <div className="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-onyx-200 transform lg:translate-x-8">
+                <h4 className="font-bold text-onyx-900 mb-4 border-b border-onyx-100 pb-3 text-lg">{variant.name}</h4>
+                <ul className="space-y-4 text-sm">
+                  {variant.pros.map((pro, idx) => (
+                    <li key={`pro-${idx}`} className="flex items-start gap-3 text-emerald-700">
+                      <CheckCircle size={18} className="shrink-0 mt-0.5"/> 
+                      <span className="font-medium">{pro}</span>
+                    </li>
+                  ))}
+                  {variant.cons.map((con, idx) => (
+                    <li key={`con-${idx}`} className="flex items-start gap-3 text-rose-700">
+                      <XCircle size={18} className="shrink-0 mt-0.5"/> 
+                      <span className="font-medium">{con}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Summary Layer */}
-          <motion.div 
-            style={{ y: ySummary, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-[75px] left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-4 shadow-lg z-30 transition-colors hover:border-blue-300"
-          >
-            <h4 className="text-[10px] font-bold text-onyx-400 uppercase tracking-wider mb-1">Professional Summary</h4>
-            <p className="text-xs text-onyx-800 leading-relaxed">
-              Award-winning Product Designer with 7+ years of experience specializing in B2B SaaS interfaces. Proven track record of increasing user retention by 40% through intuitive, accessible design systems and rigorous A/B testing methodologies.
-            </p>
-            
-            <motion.div style={{ opacity: opacityLabels, x: xLabelsLeft }} className="absolute top-1/2 right-[105%] flex items-center justify-end w-56">
-              <div className="mr-3 bg-white p-2 rounded-lg shadow-lg border border-onyx-100 text-right">
-                <div className="flex items-center justify-end gap-1.5 text-blue-600 mb-1">
-                  <span className="font-bold text-[9px] tracking-widest uppercase">Cognitive Load</span> <BrainCircuit size={14} />
-                </div>
-                <p className="text-[11px] text-onyx-600 leading-tight">Dense paragraphs are ignored. We restrict summary lengths to reduce mental friction.</p>
-              </div>
-              <div className="w-2.5 h-2.5 rounded-full bg-blue-500 -mr-1.5 border-2 border-white shrink-0 z-10"></div>
-              <div className="w-8 h-[2px] bg-blue-200 shrink-0"></div>
-            </motion.div>
-          </motion.div>
-
-          {/* Experience Layer */}
-          <motion.div 
-            style={{ y: yExperience, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-[160px] left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-4 shadow-md z-20 transition-colors hover:border-emerald-300"
-          >
-            <h4 className="text-[10px] font-bold text-onyx-400 uppercase tracking-wider mb-2">Experience</h4>
-            
-            <div className="mb-1 flex justify-between items-end">
-              <h5 className="font-bold text-onyx-900 text-xs">Lead UI/UX Designer <span className="text-onyx-500 font-normal">at TechFlow</span></h5>
-              <span className="text-[10px] text-onyx-500">2021 — Present</span>
             </div>
-            <ul className="text-xs text-onyx-700 space-y-1 list-disc list-outside ml-4">
-              <li><strong className="text-emerald-700">Spearheaded</strong> the redesign of the core analytics dashboard, resulting in a 25% decrease in customer support tickets.</li>
-              <li><strong className="text-emerald-700">Orchestrated</strong> a complete migration to Figma, saving the design team 15 hours weekly.</li>
-            </ul>
-            
-            <motion.div style={{ opacity: opacityLabels, x: xLabelsRight }} className="absolute top-1/2 left-[105%] flex items-center w-56">
-              <div className="w-8 h-[2px] bg-emerald-200 shrink-0"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 -ml-1.5 border-2 border-white shrink-0 z-10"></div>
-              <div className="ml-3 bg-white p-2 rounded-lg shadow-lg border border-onyx-100">
-                <div className="flex items-center gap-1.5 text-emerald-600 mb-1">
-                  <MousePointerClick size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">Action-Verbs</span>
-                </div>
-                <p className="text-[11px] text-onyx-600 leading-tight">Templates format bullet points for impact, guiding you to start with strong verbs.</p>
-              </div>
-            </motion.div>
-          </motion.div>
 
-          {/* Skills Layer */}
-          <motion.div 
-            style={{ y: ySkills, rotateX: 10, rotateY: -15, rotateZ: 2 }}
-            className="absolute top-[270px] left-0 w-full bg-white backdrop-blur-md border border-onyx-200 rounded-xl p-4 shadow-sm z-10 transition-colors hover:border-purple-300"
-          >
-            <h4 className="text-[10px] font-bold text-onyx-400 uppercase tracking-wider mb-2">Core Competencies</h4>
-            <div className="flex gap-1.5 flex-wrap text-[10px]">
-              <span className="px-2 py-0.5 bg-onyx-100 text-onyx-800 rounded font-medium">Interaction Design</span>
-              <span className="px-2 py-0.5 bg-onyx-100 text-onyx-800 rounded font-medium">Prototyping</span>
-              <span className="px-2 py-0.5 bg-onyx-100 text-onyx-800 rounded font-medium">User Testing</span>
-              <span className="px-2 py-0.5 bg-onyx-100 text-onyx-800 rounded font-medium">Figma</span>
+            {/* CENTER: The Resume Paper */}
+            <div className="relative h-[65vh] min-h-[500px] max-h-[700px] aspect-[1/1.414] transform-style-3d z-20 shrink-0">
+              
+              <motion.div 
+                className="w-full h-full"
+                animate={floatAnimation}
+                style={{ rotateX: 10, rotateY: -10, rotateZ: 1 }}
+              >
+                {/* Base Shadow */}
+                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-[90%] h-12 bg-onyx-900/15 rounded-[100%] blur-3xl transform translate-z-[-80px]"></div>
+
+                {/* The Paper (Removed overflow-hidden so tooltips can bleed out) */}
+                <div className="absolute inset-0 bg-white border border-onyx-200 shadow-2xl rounded p-6 lg:p-10 flex flex-col">
+                  
+                  {variant.id === 'ats' && (
+                    <div className="h-full flex flex-col gap-6 lg:gap-8 relative">
+                      {/* ATS FORMAT */}
+                      <div className="border-b-2 border-onyx-800 pb-4 text-center relative">
+                        <h3 className="text-2xl lg:text-4xl font-serif font-bold text-onyx-900 uppercase tracking-wide">Sarah Jenkins</h3>
+                        <p className="text-xs lg:text-sm text-onyx-600 mt-2">San Francisco, CA • sarah@design.io • (555) 123-4567</p>
+                        
+                        {/* Tooltip Anchor: Header */}
+                        <motion.div variants={tooltipVariants} className="absolute top-1/2 left-[102%] flex items-center w-48 lg:w-64 hidden md:flex z-30">
+                          <div className="w-12 h-[1px] bg-brand-400 shrink-0"></div>
+                          <div className="w-2 h-2 rounded-full bg-brand-500 -ml-1 border border-white shrink-0 shadow-sm"></div>
+                          <div className="ml-3 bg-white/95 backdrop-blur-md p-3 lg:p-4 rounded-xl shadow-xl border border-onyx-200 text-left relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-brand-500"></div>
+                            <div className="flex items-center gap-2 text-brand-600 mb-1.5">
+                              <Eye size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">The F-Pattern</span>
+                            </div>
+                            <p className="text-[10px] lg:text-xs text-onyx-600 leading-relaxed">Centered headers ensure immediate parsing by standard ATS bots.</p>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      <div className="relative">
+                        <h4 className="text-[10px] lg:text-xs font-bold text-onyx-900 uppercase tracking-widest mb-2 border-b border-onyx-100 pb-1">Professional Summary</h4>
+                        <p className="text-[10px] lg:text-xs text-onyx-800 leading-relaxed">
+                          Award-winning Product Designer with 7+ years of experience specializing in B2B SaaS interfaces. Proven track record of increasing user retention by 40% through intuitive, accessible design systems and rigorous A/B testing methodologies.
+                        </p>
+                      </div>
+
+                      <div className="relative">
+                        <h4 className="text-[10px] lg:text-xs font-bold text-onyx-900 uppercase tracking-widest mb-3 border-b border-onyx-100 pb-1">Experience</h4>
+                        <div className="mb-4">
+                          <div className="flex justify-between items-baseline mb-1">
+                            <h5 className="font-bold text-onyx-900 text-xs lg:text-sm">Lead Designer, TechFlow</h5>
+                            <span className="text-[9px] lg:text-xs text-onyx-600 font-medium">2021 — Present</span>
+                          </div>
+                          <ul className="text-[10px] lg:text-xs text-onyx-700 space-y-1.5 list-disc list-outside ml-4">
+                            <li><strong className="text-onyx-900">Spearheaded</strong> the redesign of the core analytics dashboard, resulting in a 25% decrease in support tickets.</li>
+                            <li><strong className="text-onyx-900">Orchestrated</strong> a complete migration to Figma, saving the design team 15 hours weekly.</li>
+                          </ul>
+                        </div>
+                        
+                        {/* Tooltip Anchor: Experience */}
+                        <motion.div variants={tooltipVariants} className="absolute top-[30%] left-[102%] flex items-center w-48 lg:w-64 hidden md:flex z-30">
+                          <div className="w-12 h-[1px] bg-emerald-400 shrink-0"></div>
+                          <div className="w-2 h-2 rounded-full bg-emerald-500 -ml-1 border border-white shrink-0 shadow-sm"></div>
+                          <div className="ml-3 bg-white/95 backdrop-blur-md p-3 lg:p-4 rounded-xl shadow-xl border border-onyx-200 text-left relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
+                            <div className="flex items-center gap-2 text-emerald-600 mb-1.5">
+                              <MousePointerClick size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">Action-Verbs</span>
+                            </div>
+                            <p className="text-[10px] lg:text-xs text-onyx-600 leading-relaxed">Standard formats require front-loading impactful verbs for extreme skimmability.</p>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      <div className="relative mt-auto">
+                        <h4 className="text-[10px] lg:text-xs font-bold text-onyx-900 uppercase tracking-widest mb-2 border-b border-onyx-100 pb-1">Skills</h4>
+                        <p className="text-[10px] lg:text-xs text-onyx-700 leading-relaxed">
+                          <strong>Design:</strong> UI/UX, Interaction Design, Prototyping, Wireframing, User Testing<br/>
+                          <strong>Tools:</strong> Figma, Adobe CC, Framer, Webflow, HTML/CSS
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {variant.id === 'creative' && (
+                    <div className="h-full flex gap-4 lg:gap-6 relative">
+                      {/* Left Column (Dark) */}
+                      <div className="w-1/3 bg-onyx-900 rounded-lg p-4 lg:p-6 text-onyx-100 flex flex-col gap-6 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-500"></div>
+                        <div>
+                          <h3 className="text-lg lg:text-3xl font-bold text-white leading-tight">Sarah<br/>Jenkins</h3>
+                          <p className="text-[9px] lg:text-sm text-brand-400 mt-2 font-medium">UI/UX Designer</p>
+                        </div>
+                        
+                        <div className="text-[8px] lg:text-xs text-onyx-300 space-y-2 mt-4">
+                          <p>San Francisco, CA</p>
+                          <p>sarah@design.io</p>
+                          <p>(555) 123-4567</p>
+                        </div>
+
+                        <div className="mt-6">
+                          <h4 className="text-[9px] lg:text-xs font-bold text-white uppercase tracking-wider mb-3 border-b border-onyx-800 pb-2">Expertise</h4>
+                          <div className="flex flex-col gap-2 text-[8px] lg:text-[10px]">
+                            <span className="bg-onyx-800 px-3 py-1.5 rounded text-center">Interaction Design</span>
+                            <span className="bg-onyx-800 px-3 py-1.5 rounded text-center">Prototyping</span>
+                            <span className="bg-onyx-800 px-3 py-1.5 rounded text-center">Figma</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Column (Light) */}
+                      <div className="w-2/3 py-2 flex flex-col gap-6 relative">
+                        <div>
+                          <h4 className="text-[9px] lg:text-xs font-bold text-onyx-400 uppercase tracking-widest mb-2 border-b border-onyx-100 pb-1">Profile</h4>
+                          <p className="text-[9px] lg:text-xs text-onyx-800 leading-relaxed">
+                            Award-winning Product Designer with 7+ years of experience specializing in B2B SaaS interfaces. Proven track record of increasing user retention by 40% through intuitive design systems.
+                          </p>
+                        </div>
+
+                        <div>
+                          <h4 className="text-[9px] lg:text-xs font-bold text-brand-600 uppercase tracking-widest mb-3 border-b border-onyx-100 pb-1">Experience</h4>
+                          <div className="mb-4">
+                            <div className="flex justify-between items-baseline mb-1">
+                              <h5 className="font-bold text-onyx-900 text-[10px] lg:text-sm">Lead Designer <span className="font-normal text-onyx-500">| TechFlow</span></h5>
+                            </div>
+                            <span className="text-[8px] lg:text-[10px] text-onyx-400 block mb-2 font-medium">2021 — Present</span>
+                            <ul className="text-[9px] lg:text-xs text-onyx-700 space-y-2 list-disc list-outside ml-4">
+                              <li>Redesigned core analytics dashboard, reducing support tickets by 25%.</li>
+                              <li>Orchestrated Figma migration, saving 15 hours weekly.</li>
+                            </ul>
+                          </div>
+                        </div>
+                        
+                        {/* Tooltip Anchor: Multi-Column */}
+                        <motion.div variants={tooltipVariants} className="absolute top-[40%] left-[102%] flex items-center w-48 lg:w-64 hidden md:flex z-30">
+                          <div className="w-12 h-[1px] bg-purple-400 shrink-0"></div>
+                          <div className="w-2 h-2 rounded-full bg-purple-500 -ml-1 border border-white shrink-0 shadow-sm"></div>
+                          <div className="ml-3 bg-white/95 backdrop-blur-md p-3 lg:p-4 rounded-xl shadow-xl border border-onyx-200 text-left relative overflow-hidden group">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
+                            <div className="flex items-center gap-2 text-purple-600 mb-1.5">
+                              <BrainCircuit size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">Visual Hierarchy</span>
+                            </div>
+                            <p className="text-[10px] lg:text-xs text-onyx-600 leading-relaxed">Sidebars create an instant visual break, organizing metadata separately from core experience.</p>
+                          </div>
+                        </motion.div>
+                      </div>
+                    </div>
+                  )}
+
+                  {variant.id === 'executive' && (
+                    <div className="h-full flex flex-col gap-6 lg:gap-8 relative">
+                      {/* EXECUTIVE FORMAT */}
+                      <div className="border-b-4 border-onyx-900 pb-4">
+                        <div className="flex justify-between items-end">
+                          <div>
+                            <h3 className="text-2xl lg:text-4xl font-serif font-bold text-onyx-900">SARAH JENKINS</h3>
+                            <p className="text-xs lg:text-sm text-brand-700 font-bold tracking-widest uppercase mt-1">VP of Product Design</p>
+                          </div>
+                          <div className="text-right text-[9px] lg:text-xs text-onyx-600 space-y-0.5">
+                            <p>sarah@design.io</p>
+                            <p>(555) 123-4567</p>
+                            <p>linkedin.com/in/sarahj</p>
+                          </div>
+                        </div>
+                        
+                        {/* Tooltip Anchor: Header */}
+                        <motion.div variants={tooltipVariants} className="absolute top-8 left-[102%] flex items-center w-48 lg:w-64 hidden md:flex z-30">
+                          <div className="w-12 h-[1px] bg-blue-400 shrink-0"></div>
+                          <div className="w-2 h-2 rounded-full bg-blue-500 -ml-1 border border-white shrink-0 shadow-sm"></div>
+                          <div className="ml-3 bg-white/95 backdrop-blur-md p-3 lg:p-4 rounded-xl shadow-xl border border-onyx-200 text-left relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                            <div className="flex items-center gap-2 text-blue-600 mb-1.5">
+                              <Search size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">Authoritative Header</span>
+                            </div>
+                            <p className="text-[10px] lg:text-xs text-onyx-600 leading-relaxed">Heavy borders and bold sans-serif titles immediately establish seniority.</p>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      <div className="relative">
+                        <h4 className="text-[10px] lg:text-sm font-bold text-onyx-900 mb-2 border-b-2 border-onyx-200 pb-1">EXECUTIVE SUMMARY</h4>
+                        <p className="text-[10px] lg:text-xs text-onyx-800 leading-relaxed font-medium">
+                          Design leader with 10+ years driving product strategy for Fortune 500 companies. Directed teams of 20+ designers to launch enterprise SaaS platforms generating $50M+ in ARR.
+                        </p>
+                      </div>
+
+                      <div className="relative">
+                        <h4 className="text-[10px] lg:text-sm font-bold text-onyx-900 mb-3 border-b-2 border-onyx-200 pb-1">LEADERSHIP EXPERIENCE</h4>
+                        <div className="mb-4">
+                          <div className="flex justify-between items-baseline mb-1">
+                            <h5 className="font-bold text-onyx-900 text-[11px] lg:text-sm">Director of Product Design</h5>
+                            <span className="text-[9px] lg:text-xs text-onyx-800 font-bold">TechFlow | 2020 — Present</span>
+                          </div>
+                          <ul className="text-[10px] lg:text-xs text-onyx-800 space-y-2 list-none ml-0 mt-3">
+                            <li className="flex gap-2">
+                              <TrendingUp size={14} className="text-brand-600 shrink-0 mt-0.5"/>
+                              <span>Scaled design organization from 3 to 24 product designers across 4 global offices, establishing a unified design system.</span>
+                            </li>
+                            <li className="flex gap-2">
+                              <TrendingUp size={14} className="text-brand-600 shrink-0 mt-0.5"/>
+                              <span>Led the 2023 product overhaul which directly contributed to a 115% increase in enterprise customer retention.</span>
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        {/* Tooltip Anchor: Experience */}
+                        <motion.div variants={tooltipVariants} className="absolute top-[50%] left-[102%] flex items-center w-48 lg:w-64 hidden md:flex z-30">
+                          <div className="w-12 h-[1px] bg-amber-500 shrink-0"></div>
+                          <div className="w-2 h-2 rounded-full bg-amber-600 -ml-1 border border-white shrink-0 shadow-sm"></div>
+                          <div className="ml-3 bg-white/95 backdrop-blur-md p-3 lg:p-4 rounded-xl shadow-xl border border-onyx-200 text-left relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+                            <div className="flex items-center gap-2 text-amber-600 mb-1.5">
+                              <TrendingUp size={14} /> <span className="font-bold text-[9px] tracking-widest uppercase">Impact Metrics</span>
+                            </div>
+                            <p className="text-[10px] lg:text-xs text-onyx-600 leading-relaxed">Executive resumes replace standard bullet points with data-dense impact statements.</p>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                    </div>
+                  )}
+
+                </div>
+              </motion.div>
             </div>
             
-            <motion.div style={{ opacity: opacityLabels, x: xLabelsLeft }} className="absolute top-1/2 right-[105%] flex items-center justify-end w-56">
-              <div className="mr-3 bg-white p-2 rounded-lg shadow-lg border border-onyx-100 text-right">
-                <div className="flex items-center justify-end gap-1.5 text-purple-600 mb-1">
-                  <span className="font-bold text-[9px] tracking-widest uppercase">ATS Matrix</span> <Search size={14} />
-                </div>
-                <p className="text-[11px] text-onyx-600 leading-tight">Robots read keyword clusters. Our isolated skills section ensures 100% extraction accuracy.</p>
-              </div>
-              <div className="w-2.5 h-2.5 rounded-full bg-purple-500 -mr-1.5 border-2 border-white shrink-0 z-10"></div>
-              <div className="w-8 h-[2px] bg-purple-200 shrink-0"></div>
-            </motion.div>
-          </motion.div>
+            {/* RIGHT SPACER for centering logic when tooltips are hidden on small screens */}
+            <div className="hidden lg:block w-1/4 max-w-sm shrink-0 relative z-0"></div>
 
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
       </div>
       
-      {/* Mobile Fallback - Static stacked cards */}
-      <div className="md:hidden w-full px-6 flex flex-col gap-6 relative z-10">
-        <div className="bg-white border border-onyx-200 p-6 rounded-xl shadow-sm">
-          <div className="flex items-center gap-2 text-brand-600 mb-2">
-             <Eye size={16} /> <span className="font-bold text-xs tracking-widest uppercase">The F-Pattern Anchor</span>
-          </div>
-          <p className="text-sm text-onyx-600 leading-relaxed">Recruiters spend 7.4 seconds scanning. Their eyes anchor top-left. Our headers ensure your name and title are instantly processed.</p>
-        </div>
-        
-        <div className="bg-white border border-onyx-200 p-6 rounded-xl shadow-sm">
-          <div className="flex items-center gap-2 text-blue-600 mb-2">
-            <BrainCircuit size={16} /> <span className="font-bold text-xs tracking-widest uppercase">Cognitive Load</span>
-          </div>
-          <p className="text-sm text-onyx-600 leading-relaxed">Dense paragraphs are ignored. We restrict summary lengths to ensure high readability and reduce mental friction.</p>
-        </div>
-
-        <div className="bg-white border border-onyx-200 p-6 rounded-xl shadow-sm">
-          <div className="flex items-center gap-2 text-emerald-600 mb-2">
-            <MousePointerClick size={16} /> <span className="font-bold text-xs tracking-widest uppercase">Action-Verb Density</span>
-          </div>
-          <p className="text-sm text-onyx-600 leading-relaxed">Bullet points formatted for impact. The templates guide you to start with strong verbs, maximizing persuasive power.</p>
-        </div>
-
-        <div className="bg-white border border-onyx-200 p-6 rounded-xl shadow-sm">
-          <div className="flex items-center gap-2 text-purple-600 mb-2">
-            <Search size={16} /> <span className="font-bold text-xs tracking-widest uppercase">ATS Parsing Matrix</span>
-          </div>
-          <p className="text-sm text-onyx-600 leading-relaxed">Robots read keyword clusters. Our isolated skills section ensures 100% extraction accuracy by applicant tracking systems.</p>
-        </div>
-      </div>
     </section>
   );
 }
